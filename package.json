@@ -22,7 +22,11 @@
     "eslint": "lb-eslint --report-unused-disable-directives .",
     "eslint:fix": "npm run eslint -- --fix",
     "pretest": "npm run rebuild",
+    "precoverage": "npm test",
+    "coverage": "open coverage/index.html",
+    "coverage:ci": "lb-nyc report --reporter=text-lcov | coveralls",
     "test": "lb-mocha --allow-console-logs \"dist/__tests__\"",
+    "test:ci": "lb-nyc npm run test --scripts-prepend-node-path",
     "posttest": "npm run lint",
     "test:dev": "lb-mocha --allow-console-logs dist/__tests__/**/*.js && npm run posttest",
     "docker:build": "docker build -t metric-aggregator-service .",
@@ -65,6 +69,7 @@
     "@types/lodash": "^4.14.179",
     "@types/node": "^12.20.46",
     "eslint": "^8.10.0",
+    "mocha": "^9.2.1",
     "source-map-support": "^0.5.21",
     "typescript": "~4.5.5"
   }
