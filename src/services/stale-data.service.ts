@@ -1,12 +1,10 @@
 import {repository} from '@loopback/repository';
 import {environment} from '../environments';
-import {AggregateRepository} from './../repositories/aggregate.repository';
 import {StateRepository} from './../repositories/state.repository';
 
 export class StaleDataService {
   constructor(
-    @repository(StateRepository) private stateRepository: StateRepository,
-    @repository(AggregateRepository) private aggregateRepository: AggregateRepository) {
+    @repository(StateRepository) private stateRepository: StateRepository) {
   }
   async autoCreate() {
     //NOTE Remove me please
@@ -19,15 +17,32 @@ export class StaleDataService {
       }
     }
   }
+
+  /**
+   * auto check for Stale Data based on staleTime in environment
+   * will remove the value from aggregate and update the state record
+   * @required - staleTime in environment
+   * @memberof StaleDataService
+   */
   async checkForStaleData() {
+
+    //NOTE Remove me please
     await this.autoCreate();
+
+    // get staleTime from environment
     const staleTime = parseInt(environment.staleTime);
     // subtract staleTime from current timers time
     const currentTime = new Date().getTime();
+
+    // caclulate the time to check for stale data
     const staleTimePeriod = new Date(currentTime - (staleTime * 1000));
     console.log('Stale Period: ' + staleTimePeriod.toISOString());
+
+    // get list of all states which satisfy the staleTime and stale = false condition
     const stateListToStale = await this.stateRepository.find({where: {timestamp: {lt: staleTimePeriod}, stale: false}});
     console.log('Stale Data: ' + stateListToStale.length);
+
+    // update the state record to make it stale and calculate the new aggregate
     for (const state of stateListToStale) {
       await this.stateRepository.update(state);
     }
