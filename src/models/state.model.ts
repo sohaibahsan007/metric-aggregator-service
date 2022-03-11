@@ -1,5 +1,5 @@
 import {model, property} from '@loopback/repository';
-import { BaseModel } from './base.entity';
+import {BaseModel} from './base.entity';
 
 @model()
 export class State extends BaseModel {
@@ -30,6 +30,12 @@ export class State extends BaseModel {
     required: true,
   })
   sign: string;
+
+  @property({
+    type: 'boolean',
+    default: false,
+  })
+  stale?: boolean;
 
   constructor(data?: Partial<State>) {
     super(data);

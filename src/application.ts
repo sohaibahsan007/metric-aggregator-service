@@ -1,14 +1,16 @@
 import {BootMixin} from '@loopback/boot';
-import {ApplicationConfig} from '@loopback/core';
-import {
-  RestExplorerBindings,
-  RestExplorerComponent,
-} from '@loopback/rest-explorer';
+import {ApplicationConfig, createBindingFromClass} from '@loopback/core';
+import {CronComponent} from '@loopback/cron';
 import {RepositoryMixin} from '@loopback/repository';
 import {RestApplication} from '@loopback/rest';
+import {
+  RestExplorerBindings,
+  RestExplorerComponent
+} from '@loopback/rest-explorer';
 import {ServiceMixin} from '@loopback/service-proxy';
 import path from 'path';
 import {MySequence} from './sequence';
+import {StaleDataCronJob} from './services/stale-data.cron';
 
 export {ApplicationConfig};
 
@@ -29,6 +31,8 @@ export class MetricAggregatorServiceApplication extends BootMixin(
       path: '/explorer',
     });
     this.component(RestExplorerComponent);
+    // add cronJob Component
+    this.component(CronComponent);
 
     this.projectRoot = __dirname;
     // Customize @loopback/boot Booter Conventions here
@@ -40,5 +44,9 @@ export class MetricAggregatorServiceApplication extends BootMixin(
         nested: true,
       },
     };
+
+    // add cronJob
+    const staleCronJobBinding = createBindingFromClass(StaleDataCronJob);
+    this.add(staleCronJobBinding);
   }
 }

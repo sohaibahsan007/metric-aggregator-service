@@ -21,4 +21,9 @@ export abstract class BaseModel extends Entity {
   })
   createdBy?: string;
 
+  @property({
+    type: 'date',
+  })
+  updatedOn?: Date;
+
 }
