@@ -9,6 +9,7 @@ import {
 } from '@loopback/rest-explorer';
 import {ServiceMixin} from '@loopback/service-proxy';
 import path from 'path';
+import {LogMiddleware} from './logger';
 import {MySequence} from './sequence';
 import {StaleDataCronJob} from './services/stale-data.cron';
 
@@ -20,6 +21,8 @@ export class MetricAggregatorServiceApplication extends BootMixin(
   constructor(options: ApplicationConfig = {}) {
     super(options);
 
+
+    this.middleware(LogMiddleware);
     // Set up the custom sequence
     this.sequence(MySequence);
 

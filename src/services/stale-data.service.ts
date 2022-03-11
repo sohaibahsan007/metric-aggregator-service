@@ -1,5 +1,6 @@
 import {repository} from '@loopback/repository';
 import {environment} from '../environments';
+import {logger} from '../logger';
 import {StateRepository} from './../repositories/state.repository';
 
 export class StaleDataService {
@@ -36,11 +37,11 @@ export class StaleDataService {
 
     // caclulate the time to check for stale data
     const staleTimePeriod = new Date(currentTime - (staleTime * 1000));
-    console.log('Stale Period: ' + staleTimePeriod.toISOString());
+    logger.debug('Stale Period: ' + staleTimePeriod.toISOString());
 
     // get list of all states which satisfy the staleTime and stale = false condition
     const stateListToStale = await this.stateRepository.find({where: {timestamp: {lt: staleTimePeriod}, stale: false}});
-    console.log('Stale Data: ' + stateListToStale.length);
+    logger.debug('Stale Data: ' + stateListToStale.length);
 
     // update the state record to make it stale and calculate the new aggregate
     for (const state of stateListToStale) {

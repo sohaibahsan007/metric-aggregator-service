@@ -1,5 +1,6 @@
 import {service} from '@loopback/core';
 import {cronJob, CronJob} from '@loopback/cron';
+import {logger} from '../logger';
 import {StaleDataService} from './stale-data.service';
 
 @cronJob()
@@ -10,7 +11,7 @@ export class StaleDataCronJob extends CronJob {
     super({
       name: 'stale-data-cron-job',
       onTick: () => {
-        console.log('Cron job started... at :' + new Date().toISOString());
+        logger.info('Cron job started...');
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
         this.staleDataService.checkForStaleData();
       },

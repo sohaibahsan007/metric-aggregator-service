@@ -60,8 +60,15 @@
     "@loopback/rest": "^11.1.1",
     "@loopback/rest-explorer": "^4.1.1",
     "@loopback/service-proxy": "^4.1.1",
+    "@types/app-root-path": "^1.2.4",
+    "@types/morgan": "^1.9.3",
+    "app-root-path": "^3.0.0",
+    "express": "^4.17.3",
     "lodash": "^4.17.21",
-    "tslib": "^2.0.0"
+    "morgan": "^1.10.0",
+    "tslib": "^2.0.0",
+    "winston": "^3.6.0",
+    "winston-daily-rotate-file": "^4.6.1"
   },
   "devDependencies": {
     "@loopback/build": "^8.1.1",
