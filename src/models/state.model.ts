@@ -41,9 +41,3 @@ export class State extends BaseModel {
     super(data);
   }
 }
-
-export interface StateRelations {
-  // describe navigational properties here
-}
-
-export type StateWithRelations = State & StateRelations;

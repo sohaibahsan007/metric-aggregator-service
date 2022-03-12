@@ -1,6 +1,7 @@
-import morgan from 'morgan';
 import {Request} from 'express';
+import morgan from 'morgan';
 import {logger} from './winstonLogger';
+
 
 interface IdRequest extends Request {
   // express-request-id was added from the middleware.

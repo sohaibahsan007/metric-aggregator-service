@@ -1,13 +1,11 @@
 import {inject} from '@loopback/core';
 import {AnyObject, DataObject, DefaultCrudRepository, repository} from '@loopback/repository';
 import {InMemoryDbDataSource} from '../datasources';
-import {State, StateRelations} from '../models';
+import {State} from '../models';
 import {AggregateRepository} from './aggregate.repository';
-
 export class StateRepository extends DefaultCrudRepository<
   State,
-  typeof State.prototype.id,
-  StateRelations
+  typeof State.prototype.id
 > {
   constructor(
     @inject('datasources.InMemoryDb') dataSource: InMemoryDbDataSource,

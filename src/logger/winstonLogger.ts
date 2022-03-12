@@ -16,14 +16,17 @@ import DailyRotateFile = require("winston-daily-rotate-file");
 
 const logFormat = winston.format.json();
 
+// create a custom info and warn log format for the logger.
 const infoWarnFilter = winston.format((info, opts) => {
   return info.level === "info" || info.level === "warn" ? info : false;
 });
 
+// create a custom error log format for the logger.
 const errorFilter = winston.format((info, opts) => {
   return info.level === "error" ? info : false;
 });
 
+// prepare options for the logger
 const options = {
   infoLog: {
     name: "Info Logs",
@@ -66,6 +69,7 @@ const options = {
   }
 };
 
+// create a new winston logger
 const transports = [
   new DailyRotateFile(options.infoLog),
   new DailyRotateFile(options.errorLog),
@@ -92,5 +96,6 @@ const winstonLogger = winston.createLogger({
   format: winston.format.combine(winston.format.timestamp(), logFormat)
 });
 
+// export the winston logger as logger
 export {winstonLogger as logger};
 

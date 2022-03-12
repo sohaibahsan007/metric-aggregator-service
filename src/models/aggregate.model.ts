@@ -1,5 +1,5 @@
 import {model, property} from '@loopback/repository';
-import { BaseModel } from './base.entity';
+import {BaseModel} from './base.entity';
 
 @model()
 export class Aggregate extends BaseModel {
@@ -21,8 +21,3 @@ export class Aggregate extends BaseModel {
   }
 }
 
-export interface AggregateRelations {
-  // describe navigational properties here
-}
-
-export type AggregateWithRelations = Aggregate & AggregateRelations;

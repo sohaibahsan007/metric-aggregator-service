@@ -18,7 +18,7 @@ export class AggregateController {
 
   @get('/aggregate')
   @response(200, {
-    description: 'Aggregate model instances',
+    description: 'Aggregate model instance. For now it will only have the count and avg.',
     content: {
       'application/json': {
         schema: getModelSchemaRef(Aggregate, {includeRelations: true}),

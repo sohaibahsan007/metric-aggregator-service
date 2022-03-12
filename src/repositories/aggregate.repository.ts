@@ -1,12 +1,11 @@
 import {inject} from '@loopback/core';
 import {AnyObject, DefaultCrudRepository} from '@loopback/repository';
 import {InMemoryDbDataSource} from '../datasources';
-import {Aggregate, AggregateRelations} from '../models';
+import {Aggregate} from '../models';
 
 export class AggregateRepository extends DefaultCrudRepository<
   Aggregate,
-  typeof Aggregate.prototype.id,
-  AggregateRelations
+  typeof Aggregate.prototype.id
 > {
   constructor(
     @inject('datasources.InMemoryDb') dataSource: InMemoryDbDataSource,
@@ -65,8 +64,7 @@ export class AggregateRepository extends DefaultCrudRepository<
    * @memberof AggregateRepository
    */
   async get(): Promise<Aggregate> {
-    //NOTE Update createdBy Field
-    return (await super.findOne()) ?? new Aggregate({createdBy: 'Sohaib'});
+    return (await super.findOne()) ?? new Aggregate({});
   }
 
   /**
