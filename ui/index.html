@@ -1,0 +1,63 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Metric Aggregator Service UI</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" type="text/css">
+</head>
+
+<body>
+  <main class="container-fluid">
+    <header>
+      <h1 class="text-center">Metric Aggregator Service UI</h1>
+    </header>
+    <div class="row g-1">
+      <section class="col-lg-3 ml-3 mr-3">
+        <div class="row d-flex justify-content-center">
+          <div class="card w-100">
+            <div class="card-body">
+              <h4 class="card-title">Basic Actions</h4>
+              <button class="btn btn-primary btn-lg btn-block mb-3" id="connectButton" disabled></button>
+              <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <p class="info-text alert alert-success">
+                  Accounts: <span id="accounts"></span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="col-lg-3 ml-3 mr-3">
+        <div class="row d-flex justify-content-center">
+          <div class="card w-100">
+            <div class="card-body">
+              <h4 class="card-title">Sign Value and TimeStamp</h4>
+              <button class="btn btn-primary btn-lg btn-block mb-3" id="signButton" disabled></button>
+              <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <p class="info-text">
+                  Random Value: <span id="randomValue"></span>
+                </p>
+                <p class="info-text">
+                  TimeStamp: <span id="timeStamp"></span>
+                </p>
+                <p class="info-text">
+                  Signature: <span id="signature"></span>
+                </p>
+                <p class="info-text">
+                  Signer Address: <span id="signerAddress"></span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+  <script src="node_modules/@metamask/onboarding/dist/metamask-onboarding.bundle.js" defer></script>
+  <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js" type="application/javascript"></script>
+  <script src="contract.js" defer></script>
+</body>
+
+</html>
