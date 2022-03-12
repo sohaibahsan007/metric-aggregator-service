@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import {inject} from '@loopback/core';
 import {
-  post, Request, response,
+  get, Request, response,
   ResponseObject, RestBindings
 } from '@loopback/rest';
 
@@ -41,7 +41,7 @@ export class PingController {
   ) { }
 
   // Map to `GET /ping`
-  @post('/ping')
+  @get('/ping')
   @response(200, PING_RESPONSE)
   ping(): object {
     // Reply with a greeting, the current time, the url, and request headers
