@@ -13,9 +13,9 @@ export class StaleDataCronJob extends CronJob {
       onTick: () => {
         logger.info('Cron job started...');
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
-        this.staleDataService.checkForStaleData();
+        // this.staleDataService.checkForStaleData();
       },
-      cronTime: `*/10 * * * * *`,
+      cronTime: `*/60 * * * * *`,
       // Starts the cron job as soon as application starts
       start: true,
       // Immediately fires onTick function

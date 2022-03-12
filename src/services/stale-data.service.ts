@@ -14,7 +14,7 @@ export class StaleDataService {
       const t = new Date();
       for (let i = 1; i <= 10; i++) {
         await this.stateRepository.create({value: 10 * i, timestamp: t, address: '0x0', sign: '0x0'});
-        t.setSeconds(t.getSeconds() + 6);
+        t.setSeconds(t.getSeconds() + 10);
       }
     }
   }
@@ -45,6 +45,7 @@ export class StaleDataService {
 
     // update the state record to make it stale and calculate the new aggregate
     for (const state of stateListToStale) {
+      logger.debug('Now Stale Data Value: ' + state.value);
       await this.stateRepository.update(state);
     }
   }

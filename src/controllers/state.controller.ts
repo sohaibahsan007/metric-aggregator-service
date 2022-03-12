@@ -1,29 +1,28 @@
 /* eslint-disable @typescript-eslint/naming-convention */
+import {authenticate} from '@loopback/authentication';
 import {
   Count,
   CountSchema,
   Filter,
   repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
-  post,
-  param,
   get,
-  getModelSchemaRef,
-  requestBody,
-  response,
+  getModelSchemaRef, param, post, requestBody,
+  response
 } from '@loopback/rest';
+import {AuthStrategy} from '../auth';
 import {State} from '../models';
 import {StateRepository} from '../repositories';
-
 export class StateController {
   constructor(
     @repository(StateRepository)
-    public stateRepository : StateRepository,
+    public stateRepository: StateRepository,
   ) {
   }
 
+  @authenticate({strategy: AuthStrategy.Sign})
   @post('/states')
   @response(200, {
     description: 'State model instance',
@@ -35,7 +34,7 @@ export class StateController {
         'application/json': {
           schema: getModelSchemaRef(State, {
             title: 'NewState',
-            exclude: ['id','createdBy','createdOn','updatedOn'],
+            exclude: ['id', 'createdBy', 'createdOn', 'updatedOn', 'stale'],
           }),
         },
       },

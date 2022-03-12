@@ -53,6 +53,7 @@
     "!*/__tests__"
   ],
   "dependencies": {
+    "@loopback/authentication": "^8.1.1",
     "@loopback/boot": "^4.1.1",
     "@loopback/core": "^3.1.1",
     "@loopback/cron": "^0.8.1",
@@ -63,6 +64,7 @@
     "@types/app-root-path": "^1.2.4",
     "@types/morgan": "^1.9.3",
     "app-root-path": "^3.0.0",
+    "ethers": "^5.6.0",
     "express": "^4.17.3",
     "lodash": "^4.17.21",
     "morgan": "^1.10.0",

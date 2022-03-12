@@ -1,3 +1,4 @@
+import {AuthenticationComponent, registerAuthenticationStrategy} from '@loopback/authentication';
 import {BootMixin} from '@loopback/boot';
 import {ApplicationConfig, createBindingFromClass} from '@loopback/core';
 import {CronComponent} from '@loopback/cron';
@@ -9,8 +10,10 @@ import {
 } from '@loopback/rest-explorer';
 import {ServiceMixin} from '@loopback/service-proxy';
 import path from 'path';
+import {SignStrategy} from './auth';
+import {SignVerifyService} from './auth/sign_verify.service';
+import {SignServiceBindings} from './keys';
 import {LogMiddleware} from './logger';
-import {MySequence} from './sequence';
 import {StaleDataCronJob} from './services/stale-data.cron';
 
 export {ApplicationConfig};
@@ -23,8 +26,6 @@ export class MetricAggregatorServiceApplication extends BootMixin(
 
 
     this.middleware(LogMiddleware);
-    // Set up the custom sequence
-    this.sequence(MySequence);
 
     // Set up default home page
     this.static('/', path.join(__dirname, '../public'));
@@ -48,8 +49,20 @@ export class MetricAggregatorServiceApplication extends BootMixin(
       },
     };
 
+
+    // add authentication component
+    this.component(AuthenticationComponent);
+
+    // Bind SignStrategy authentication strategy related elements
+    registerAuthenticationStrategy(this, SignStrategy);
+
+
+    this.bind(SignServiceBindings.SIGN_VERIFY).toClass(SignVerifyService);
+
     // add cronJob
     const staleCronJobBinding = createBindingFromClass(StaleDataCronJob);
     this.add(staleCronJobBinding);
   }
 }
+
+

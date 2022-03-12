@@ -1,7 +1,7 @@
 
 
 export const environment = {
-  staleTime: '60', // seconds
+  staleTime: '10', // seconds
 };
 
 

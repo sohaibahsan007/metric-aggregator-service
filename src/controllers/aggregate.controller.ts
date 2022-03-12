@@ -1,13 +1,11 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import {
   Filter,
-  repository,
+  repository
 } from '@loopback/repository';
 import {
-  param,
   get,
-  getModelSchemaRef,
-  response,
+  getModelSchemaRef, param, response
 } from '@loopback/rest';
 import {Aggregate} from '../models';
 import {AggregateRepository} from '../repositories';
@@ -15,25 +13,22 @@ import {AggregateRepository} from '../repositories';
 export class AggregateController {
   constructor(
     @repository(AggregateRepository)
-    public aggregateRepository : AggregateRepository,
-  ) {}
+    public aggregateRepository: AggregateRepository,
+  ) { }
 
-  @get('/aggregates')
+  @get('/aggregate')
   @response(200, {
-    description: 'Array of Aggregate model instances',
+    description: 'Aggregate model instances',
     content: {
       'application/json': {
-        schema: {
-          type: 'array',
-          items: getModelSchemaRef(Aggregate, {includeRelations: true}),
-        },
+        schema: getModelSchemaRef(Aggregate, {includeRelations: true}),
       },
     },
   })
-  async find(
+  async findOne(
     @param.filter(Aggregate) filter?: Filter<Aggregate>,
-  ): Promise<Aggregate[]> {
-    return this.aggregateRepository.find(filter);
+  ): Promise<Aggregate | null> {
+    return this.aggregateRepository.findOne(filter);
   }
 
 }
