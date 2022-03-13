@@ -38,7 +38,7 @@ export class SignStrategy implements AuthenticationStrategy {
     const signBodyValue: State = await this.extractCredentials(request);
     try {
       // verify sign using SignVerifyService verifySign method
-      const signerAddress = await this.signVerifyService.verifySign(signBodyValue);
+      const signerAddress = this.signVerifyService.verifySign(signBodyValue);
       const userProfile = Object.assign(
         {[securityId]: ''},
         {

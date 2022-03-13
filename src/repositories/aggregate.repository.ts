@@ -13,50 +13,7 @@ export class AggregateRepository extends DefaultCrudRepository<
     super(Aggregate, dataSource);
   }
 
-  /**
-   * calculate the addition of a new value to the average
-   * @param {number} value - value to be added to the average
-   * @returns Promise<{count: number; avg: number;}> - will return count and avg.
-   * @memberof AggregateRepository
-   */
-  async addAvg(value: number): Promise<{count: number; avg: number;}> {
-    // get current metric
-    const currentMetric = await this.get();
 
-    // set current count as previous count
-    const previousCount = (currentMetric?.count ?? 0);
-
-    // calc total value from previous count and avg.
-    const totalValue = (currentMetric?.avg ?? 0) * previousCount;
-
-    // add 1 to the previous count
-    const count = previousCount + 1;
-
-    // calc new avg
-    const avg = (value + totalValue) / count;
-
-    // return new avg and new count
-    return {count, avg};
-  }
-
-  /**
-   * Represents the subtract of a value from current average
-   * @param {number} value - value to be subtracted from current average
-   * @returns
-   */
-
-  /**
-   * calculate the subtract of a value from current average
-   * @param {number} value  - value to be subtracted from current average
-   * @returns Promise<{count: number; avg: number;}> - will return count and avg.
-   * @memberof AggregateRepository
-   */
-  async subtractAvg(value: number): Promise<{count: number; avg: number;}> {
-    const currentMetric = await this.get();
-    const count = (currentMetric?.count ?? 0);
-    const avg = ((currentMetric?.avg ?? 0) * count - value) / ((count - 1) < 1 ? 1 : (count - 1));
-    return {count: (count - 1) < 0 ? 0 : (count - 1), avg: avg < 0 ? 0 : avg};
-  }
 
   /**
    * get the current aggregate record, if not exist then return a new aggregate record

@@ -5,7 +5,7 @@ import {ethers} from "ethers";
 import {logger} from '../logger';
 import {State} from '../models';
 export interface ISignVerifyService {
-  verifySign(state: State): Promise<string>;
+  verifySign(state: State): string;
 }
 
 
@@ -24,7 +24,7 @@ export class SignVerifyService implements ISignVerifyService {
    * @returns {Promise<string>} - return signerAddress
    * @memberof SignVerifyService
    */
-  async verifySign(state: State): Promise<string> {
+  verifySign(state: State): string {
     if (!state?.sign || !state?.value || !state?.timestamp || !state?.address) {
       throw new HttpErrors.Unauthorized(
         `Error verifying signaute : 'sign' or 'value' or 'timestamp' or 'address' is null`,
@@ -43,8 +43,8 @@ export class SignVerifyService implements ISignVerifyService {
 
       // match signer address with state address
       if (signerAddr !== state?.address) {
-        logger.error('Error verifying signature');
-        throw new HttpErrors.Unauthorized('Error verifying signature');
+        logger.error('Invalid Signature');
+        throw new HttpErrors.Unauthorized('Invalid Signature');
       }
       // set isValidSign to true
       signerAddress = signerAddr;

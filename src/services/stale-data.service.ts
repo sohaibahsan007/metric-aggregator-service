@@ -1,11 +1,14 @@
+import {service} from '@loopback/core';
 import {repository} from '@loopback/repository';
 import {environment} from '../environments';
 import {logger} from '../logger';
 import {StateRepository} from './../repositories/state.repository';
+import {StateService} from './state.service';
 
 export class StaleDataService {
   constructor(
-    @repository(StateRepository) private stateRepository: StateRepository) {
+    @repository(StateRepository) private stateRepository: StateRepository,
+    @service(StateService) private stateService: StateService) {
   }
   async autoCreate() {
     //NOTE Remove me please
@@ -43,10 +46,11 @@ export class StaleDataService {
     const stateListToStale = await this.stateRepository.find({where: {timestamp: {lt: staleTimePeriod}, stale: false}});
     logger.debug('Stale Data: ' + stateListToStale.length);
 
-    // update the state record to make it stale and calculate the new aggregate
+    // stale state record  and calculate the new aggregate
     for (const state of stateListToStale) {
       logger.debug('Now Stale Data Value: ' + state.value);
-      await this.stateRepository.update(state);
+      // call State Service to make the state stale
+      await this.stateService.staleStateRecord(state);
     }
   }
 

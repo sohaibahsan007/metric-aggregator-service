@@ -1,4 +1,5 @@
 node_modules/
 dist/
+ui/
 coverage/
 .eslintrc.js

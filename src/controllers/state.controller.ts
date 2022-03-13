@@ -1,11 +1,10 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import {authenticate} from '@loopback/authentication';
+import {service} from '@loopback/core';
 import {
   Count,
   CountSchema,
-  Filter,
-  repository,
-  Where
+  Filter, repository, Where
 } from '@loopback/repository';
 import {
   get,
@@ -15,8 +14,11 @@ import {
 import {AuthStrategy} from '../auth';
 import {State} from '../models';
 import {StateRepository} from '../repositories';
+import {StateService} from '../services/state.service';
 export class StateController {
   constructor(
+    @service(StateService)
+    public stateService: StateService,
     @repository(StateRepository)
     public stateRepository: StateRepository,
   ) {
@@ -41,7 +43,7 @@ export class StateController {
     })
     state: Omit<State, 'id'>,
   ): Promise<State> {
-    return this.stateRepository.create(state);
+    return this.stateService.createStateRecord(state);
   }
 
   @get('/states/count')
