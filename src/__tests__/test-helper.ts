@@ -1,9 +1,9 @@
-import {MetricAggregatorServiceApplication} from '../..';
+import {juggler} from '@loopback/repository';
 import {
-  createRestAppClient,
-  givenHttpServerConfig,
-  Client,
+  Client, createRestAppClient,
+  givenHttpServerConfig
 } from '@loopback/testlab';
+import {MetricAggregatorServiceApplication} from '..';
 
 export async function setupApplication(): Promise<AppWithClient> {
   const restConfig = givenHttpServerConfig({
@@ -30,3 +30,8 @@ export interface AppWithClient {
   app: MetricAggregatorServiceApplication;
   client: Client;
 }
+
+export const testdb: juggler.DataSource = new juggler.DataSource({
+  name: 'db',
+  connector: 'memory',
+});

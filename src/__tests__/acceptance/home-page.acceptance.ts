@@ -1,6 +1,6 @@
 import {Client} from '@loopback/testlab';
 import {MetricAggregatorServiceApplication} from '../..';
-import {setupApplication} from './test-helper';
+import {setupApplication} from '../test-helper';
 
 describe('HomePage', () => {
   let app: MetricAggregatorServiceApplication;

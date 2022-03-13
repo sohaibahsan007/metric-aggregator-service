@@ -13,7 +13,7 @@ describe('SignVerifyService', function (this: Mocha.Suite) {
     sign: '0x4a4e5e56f7422746772ac63fd4976bd88458011ce1bb014cd0ac0ee7819afe33372875aa5e7ebb419d02a0698c374f6be4a7497db617e93c853bbe52441bf7c41c'
   });
 
-  before('setupApplication', () => {
+  before('get instance of SignVerifyService', () => {
     (signVerifyService = new SignVerifyService());
   });
 
