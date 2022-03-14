@@ -18,15 +18,61 @@ To only install resolved dependencies in `package-lock.json`:
 npm ci
 ```
 
-## Run the application
+and for the UI
 
 ```sh
-npm start
+cd ui/ && npm i
+```
+
+## Set Config for API
+
+config file in API contains only one var which is staleTime and has a default value of 10sec. if you want to change the default staleTime, Open [config.ts](https://github.com/sohaibahsan007/metric-aggregator-service/blob/48dc593be09ed19e67f4c8006f311a0d2fd56d58/src/config.ts#L2) and change staleTime to anything you want. 
+
+```sh 
+export const config = {
+  staleTime: '10', // seconds
+};
+```
+
+## Run the API
+
+```sh
+npm run start
 ```
 
 You can also run `node .` to skip the build step.
 
-Open http://127.0.0.1:3000 in your browser.
+Open http://localhost:3000/ in your browser.
+
+you can see swagger compatible API Explore on http://localhost:3000/explorer/ and Open API Spec.json http://localhost:3000/openapi.json which can be used to Import as collection in Postman. 
+
+## Set Config for UI
+
+config file in UI, which can be accessed using this link [config.json](https://github.com/sohaibahsan007/metric-aggregator-service/blob/00b8c926539f19653c59d88a29b712a91b27990d/ui/config.json#L1) which contains following variables. 
+
+```sh
+[{
+  "serverURL": "http://localhost:3000/metrics",
+  "publishIntervalInSec": "5",
+  "privateKey": "585b2e8bc0836315c36445f07cadb6b509a0d721c518c3ebdf7d5372c8bc23d7"
+}]
+```
+
+you can change privateKey to your own privateKey. 
+
+
+## Run the UI
+
+```sh
+cd ui/ && npm run serve
+```
+If you are already in **UI** directoy then run. 
+
+```sh
+npm run serve
+``` 
+
+Open http://localhost:9011/ in your browser.
 
 ## Rebuild the project
 
