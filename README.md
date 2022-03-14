@@ -88,6 +88,45 @@ To force a full build by cleaning up cached artifacts:
 npm run rebuild
 ```
 
+
+# Project structure
+
+```
+dist/                             compiled version
+src/                              api project source code
+|- __tests__/                     contains tests 
+|  |- acceptance                  contains basic acceptance test
+|  |- integration                 contains multiple clients and server integration test
+|  |- unit                        contains unit test for aggregation testing, stale data timeout and signature validation.
+|  +- test-helper.ts              tests basic helper file
+|- auth/                          contains signature validation code
+|  |- auth_strategy.enum.ts       contains type of auth strategy
+|  |- sign_verify.service.ts      contains signature validation service 
+|  |- sign_verify_strategy.ts     contains implementation of auth with signature verfication when ever auth decorator is used. 
+|- controllers                    contains 3 controllers including getting aggregate mertric, list of metric records and post method to create metric record.
+|- datasources                    contains in-memory db datasource
+|- logger                         contains logger library 
+|- models                         contains all models
+|  |- aggregate.model.ts          this model contains aggregate properties (average and count).
+|  |- base.entity.ts              this model contains basic property that can be shared and re-used like id createdOn etc. 
+|  |- metric.model.ts             this model contains timestamp,address,value and sign for the metric.
+|- repositories                   contains repositories from the above mentioned models
+|- services                       contains services 
+|  |- aggregate.service.ts        this service will provide adding value in average and substract value in average methods.
+|  |- metric.service.ts           this service contains createMetricRecord and update Staled Metric Record data. 
+|  |- stale-data.cron.ts.         this contains cronJob service which will run every 10sec interval to check stale data records. and update if any available. 
+|  |- stale-data.service.ts       this contains methods to get staleTime period, list of staled records and make those stale records updated by subtract in average.
+|- config.ts                      this contains config var staleTime  which can be used to configure different time. 
+
+ui/                               ui project source code
+|- config.json                    contains config variable like serverURL,interval and private key.
+|- contact.js                     metamask integration code, which contains all methods for the operation and integration with wallet, sending api calls. etc
+|- index.html                     html file - main entry 
+
+
+
+```
+
 ## Fix code style and formatting issues
 
 ```sh
