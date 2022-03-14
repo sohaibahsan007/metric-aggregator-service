@@ -1,8 +1,8 @@
 import {service} from '@loopback/core';
 import {repository} from '@loopback/repository';
-import {environment} from '../environments';
 import {logger} from '../logger';
 import {Metric} from '../models';
+import {config} from './../config';
 import {MetricRepository} from './../repositories/metric.repository';
 import {MetricService} from './metric.service';
 
@@ -20,7 +20,7 @@ export class StaleDataService {
   async updateStaleData() {
 
     // get staleTime from environment
-    const staleTime = this.getStaleTime(parseInt(environment.staleTime));
+    const staleTime = this.getStaleTime(parseInt(config.staleTime));
 
     // get list of all metrics which satisfy the staleTime and stale = false condition
     const metricListToStale = await this.getStaledRecords(staleTime);
