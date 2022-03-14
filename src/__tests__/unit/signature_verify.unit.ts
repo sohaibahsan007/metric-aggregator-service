@@ -1,12 +1,12 @@
 import {expect} from '@loopback/testlab';
 import {SignVerifyService} from '../../auth';
-import {State} from '../../models';
+import {Metric} from '../../models';
 
 
 describe('SignVerifyService', function (this: Mocha.Suite) {
   let signVerifyService: SignVerifyService;
-  // set state to be used in verifySign
-  const state = new State({
+  // set metric to be used in verifySign
+  const metric = new Metric({
     timestamp: new Date('2022-03-13T13:52:54.654Z'),
     address: '0x31e7f9b72383C5FF7D91b62c361299b473480744',
     value: 865182,
@@ -18,17 +18,17 @@ describe('SignVerifyService', function (this: Mocha.Suite) {
   });
 
   it('verify with valid sign', () => {
-    // call the verifySign method with State as Param
-    const response = signVerifyService.verifySign(state);
-    // expect signerAddress to be exact with state address
-    expect(response).to.equal(state?.address);
+    // call the verifySign method with Metric as Param
+    const response = signVerifyService.verifySign(metric);
+    // expect signerAddress to be exact with metric address
+    expect(response).to.equal(metric?.address);
   });
 
   it('verify with invalid sign', () => {
     // will only change value to make it invalid
-    state.value = 100;
+    metric.value = 100;
     const call = function () {
-      signVerifyService.verifySign(state)
+      signVerifyService.verifySign(metric)
     };
     expect(call).to.throw(Error);
 

@@ -1,24 +1,24 @@
 import {BindingScope, injectable, service} from '@loopback/core';
 import {DataObject, repository} from '@loopback/repository';
-import {State} from '../models';
-import {AggregateRepository, StateRepository} from '../repositories';
+import {Metric} from '../models';
+import {AggregateRepository, MetricRepository} from '../repositories';
 import {AggregateService} from './aggregate.service';
 
 @injectable({scope: BindingScope.TRANSIENT})
-export class StateService {
+export class MetricService {
   constructor(
     @repository(AggregateRepository) private aggregateRepository: AggregateRepository,
     @service(AggregateService) private aggregateService: AggregateService,
-    @repository(StateRepository) private stateRepository: StateRepository,
+    @repository(MetricRepository) private metricRepository: MetricRepository,
   ) { }
 
   /**
  * create and calculate the aggregate
- * @param {DataObject<State>} entity - pass in the entity
- * @returns {Promise<State>} - return the created entity
+ * @param {DataObject<Metric>} entity - pass in the entity
+ * @returns {Promise<Metric>} - return the created entity
  * @memberof StaleService
  */
-  async createStateRecord(entity: DataObject<State>): Promise<State> {
+  async createMetricRecord(entity: DataObject<Metric>): Promise<Metric> {
     // get aggregate
     const aggregate = await this.aggregateRepository.get();
     // calculate  current average and count using entity value
@@ -28,16 +28,16 @@ export class StateService {
     await this.aggregateRepository.update({avg, count});
 
     // create and return the created entity
-    return this.stateRepository.create(entity);
+    return this.metricRepository.create(entity);
   }
 
   /**
-   * stale State Record and subtract value from the aggregate
-   * @param {DataObject<State>} entity - pass in the entity
+   * stale Metric Record and subtract value from the aggregate
+   * @param {DataObject<Metric>} entity - pass in the entity
    * @returns {Promise<void>} -   return void
    * @memberof StaleService
    */
-  async staleStateRecord(entity: DataObject<State>): Promise<void> {
+  async staleMetricRecord(entity: DataObject<Metric>): Promise<void> {
     // get aggregate
     const aggregate = await this.aggregateRepository.get();
 
@@ -47,9 +47,9 @@ export class StateService {
     // update aggregate record with new avg and count
     await this.aggregateRepository.update({avg, count});
 
-    // make the state stale after subtracting the value
+    // make the metric stale after subtracting the value
     entity.stale = true;
     // update the entity
-    return this.stateRepository.updateById(entity.id, entity);
+    return this.metricRepository.updateById(entity.id, entity);
   }
 }

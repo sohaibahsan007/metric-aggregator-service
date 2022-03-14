@@ -2,7 +2,7 @@ import {model, property} from '@loopback/repository';
 import {BaseModel} from './base.entity';
 
 @model()
-export class State extends BaseModel {
+export class Metric extends BaseModel {
 
   @property({
     type: 'date',
@@ -37,7 +37,7 @@ export class State extends BaseModel {
   })
   stale?: boolean;
 
-  constructor(data?: Partial<State>) {
+  constructor(data?: Partial<Metric>) {
     super(data);
   }
 }

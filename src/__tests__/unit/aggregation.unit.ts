@@ -26,15 +26,15 @@ describe('AggregateService', function (this: Mocha.Suite) {
     // set avg and count to 56 and 10 to start with
     // this is the average and count for
     // Values: 10, 20, 30, 40, 50, 60, 70, 80, 90, 100
-    // Count is 10 and Average is 56
-    const aggregate = new Aggregate({count: 10, avg: 56});
+    // Count is 10 and Average is 55
+    const aggregate = new Aggregate({count: 10, avg: 55});
 
     // pass 10 as value with aggregate to be subtracted
     const response = aggregateService.subtractAvg(10, aggregate);
 
-    // expect count to be 9 and avg to be 61.11
+    // expect count to be 9 and avg to be 60
     expect(response.count).to.equal(9);
-    expect(parseFloat((response.avg).toFixed(2))).to.equal(61.11);
+    expect(response.avg).to.equal(60);
   });
 
 });

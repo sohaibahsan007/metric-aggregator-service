@@ -1,3 +1,4 @@
-export * from './ping.controller';
-export * from './state.controller';
 export * from './aggregate.controller';
+export * from './metric.controller';
+export * from './ping.controller';
+

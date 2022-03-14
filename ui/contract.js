@@ -149,7 +149,7 @@ const postAPICall = ({timestamp, address, value, sign}) => {
     redirect: 'follow',
   };
 
-  fetch('http://localhost:3000/states', requestOptions)
+  fetch('http://localhost:3000/metrics', requestOptions)
     .then(response => response.text())
     .then(result => alert('Success'))
     .catch(error => console.log('error', error));

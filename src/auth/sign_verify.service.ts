@@ -3,9 +3,9 @@
 import {HttpErrors} from '@loopback/rest';
 import {ethers} from "ethers";
 import {logger} from '../logger';
-import {State} from '../models';
+import {Metric} from '../models';
 export interface ISignVerifyService {
-  verifySign(state: State): string;
+  verifySign(metric: Metric): string;
 }
 
 
@@ -19,13 +19,13 @@ export interface ISignVerifyService {
 export class SignVerifyService implements ISignVerifyService {
 
   /**
-   * verify signature using State Model value
-   * @param {State} state - State Model
+   * verify signature using Metric Model value
+   * @param {Metric} metric - Metric Model
    * @returns {Promise<string>} - return signerAddress
    * @memberof SignVerifyService
    */
-  verifySign(state: State): string {
-    if (!state?.sign || !state?.value || !state?.timestamp || !state?.address) {
+  verifySign(metric: Metric): string {
+    if (!metric?.sign || !metric?.value || !metric?.timestamp || !metric?.address) {
       throw new HttpErrors.Unauthorized(
         `Error verifying signaute : 'sign' or 'value' or 'timestamp' or 'address' is null`,
       );
@@ -33,16 +33,16 @@ export class SignVerifyService implements ISignVerifyService {
     let signerAddress;
     try {
       // convert timestamp to unix timestamp
-      const unix = Math.floor(new Date(state?.timestamp).getTime() / 1000);
+      const unix = Math.floor(new Date(metric?.timestamp).getTime() / 1000);
 
       // concat value and unix timestamp
-      const concatedValue = (state?.value)?.toString().concat((unix)?.toString());
+      const concatedValue = (metric?.value)?.toString().concat((unix)?.toString());
 
       // verify signature
-      const signerAddr = ethers.utils.verifyMessage(concatedValue, state?.sign);
+      const signerAddr = ethers.utils.verifyMessage(concatedValue, metric?.sign);
 
-      // match signer address with state address
-      if (signerAddr !== state?.address) {
+      // match signer address with metric address
+      if (signerAddr !== metric?.address) {
         logger.error('Invalid Signature');
         throw new HttpErrors.Unauthorized('Invalid Signature');
       }

@@ -5,7 +5,7 @@ import {inject} from '@loopback/core';
 import {HttpErrors, JsonBodyParser, Request} from '@loopback/rest';
 import {securityId} from '@loopback/security';
 import {SignServiceBindings} from '../keys';
-import {State} from '../models';
+import {Metric} from '../models';
 import {UserProfile} from './../../node_modules/@loopback/security/dist/types.d';
 import {SignVerifyService} from './sign_verify.service';
 
@@ -35,7 +35,7 @@ export class SignStrategy implements AuthenticationStrategy {
   async authenticate(request: Request): Promise<UserProfile | undefined> {
 
     // extract credentials from request body
-    const signBodyValue: State = await this.extractCredentials(request);
+    const signBodyValue: Metric = await this.extractCredentials(request);
     try {
       // verify sign using SignVerifyService verifySign method
       const signerAddress = this.signVerifyService.verifySign(signBodyValue);
@@ -57,10 +57,10 @@ export class SignStrategy implements AuthenticationStrategy {
   /**
    * Extract credentials from request body
    * @param {Request} request - request object
-   * @returns {Promise<State>} - return State Model
+   * @returns {Promise<Metric>} - return Metric Model
    * @memberof SignStrategy
    */
-  async extractCredentials(request: Request): Promise<State> {
+  async extractCredentials(request: Request): Promise<Metric> {
 
     // using JsonBodyParser to parse request body
     const body = await new JsonBodyParser().parse(request);
@@ -70,17 +70,17 @@ export class SignStrategy implements AuthenticationStrategy {
       throw new HttpErrors.Unauthorized(`Authorization body not found`);
     }
 
-    // convert body.value into State Model
-    const signBodyValue = body?.value as State;
+    // convert body.value into Metric Model
+    const signBodyValue = body?.value as Metric;
 
-    // validate State Model properties which are required in verification of sign
+    // validate Metric Model properties which are required in verification of sign
     if (!signBodyValue.sign || !signBodyValue.value || !signBodyValue.timestamp || !signBodyValue.address) {
       throw new HttpErrors.Unauthorized(
         `Required values like 'sign' or 'value' or 'timestamp' or 'address' not found'.`,
       );
     }
 
-    // return State Model
+    // return Metric Model
     return signBodyValue;
   }
 }
