@@ -149,7 +149,7 @@ npm run lint:fix
 ## Tests
 
 ```sh
-npm test
+npm run test
 ```
 
 ## What's next
