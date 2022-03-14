@@ -2,9 +2,7 @@
 import {authenticate} from '@loopback/authentication';
 import {service} from '@loopback/core';
 import {
-  Count,
-  CountSchema,
-  Filter, repository, Where
+  Filter, repository
 } from '@loopback/repository';
 import {
   get,
@@ -44,17 +42,6 @@ export class MetricController {
     metric: Omit<Metric, 'id'>,
   ): Promise<Metric> {
     return this.metricService.createMetricRecord(metric);
-  }
-
-  @get('/metrics/count')
-  @response(200, {
-    description: 'Metric model count',
-    content: {'application/json': {schema: CountSchema}},
-  })
-  async count(
-    @param.where(Metric) where?: Where<Metric>,
-  ): Promise<Count> {
-    return this.metricRepository.count(where);
   }
 
   @get('/metrics')
