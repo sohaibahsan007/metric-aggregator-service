@@ -16,6 +16,7 @@ export async function setupApplication(): Promise<AppWithClient> {
 
   const app = new MetricAggregatorServiceApplication({
     rest: restConfig,
+    disableConsoleLog: true,
   });
 
   await app.boot();
