@@ -1,7 +1,6 @@
 # metric-aggregator-service
 
-This application is generated using [LoopBack 4 CLI](https://loopback.io/doc/en/lb4/Command-line-interface.html) with the
-[initial project layout](https://loopback.io/doc/en/lb4/Loopback-application-layout.html).
+this application contains service which ingest metric data, make available over api and a client which broadcast random number in a range to the collector. 
 
 ## Install dependencies
 
