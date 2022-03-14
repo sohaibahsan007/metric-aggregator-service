@@ -2,6 +2,10 @@ const forwarderOrigin = 'http://localhost:9010';
 const signButton = document.getElementById('signButton');
 const signatureDiv = document.getElementById('signature');
 const signerAddressDiv = document.getElementById('signerAddress');
+const autoPublishConfig = document.getElementById('autoPublishConfig');
+const autoPublishCalls = document.getElementById('autoPublishCalls');
+let config;
+let publishIntervalAPICallsHTML = '';
 const basicFunctionality = () => {
   //You will start here
   //Basic Actions Section
@@ -32,7 +36,7 @@ const basicFunctionality = () => {
       onboardButton.disabled = false;
       signButton.disabled = true;
     } else if (isMetaMaskConnected()) {
-      onboardButton.innerText = 'Connected';
+      onboardButton.innerText = 'MetaMask Connected';
       onboardButton.disabled = true;
       signButton.innerText = 'Sign & Send API Call';
       signButton.disabled = false;
@@ -40,7 +44,7 @@ const basicFunctionality = () => {
         onboarding.stopOnboarding();
       }
     } else {
-      onboardButton.innerText = 'Connect';
+      onboardButton.innerText = 'Connect MetaMask';
       onboardButton.onclick = onClickConnect;
       onboardButton.disabled = false;
       signButton.disabled = true;
@@ -80,14 +84,14 @@ const basicFunctionality = () => {
       //The button is now disabled
       onboardButton.disabled = false;
     } else if (isMetaMaskConnected()) {
-      onboardButton.innerText = 'Connected';
+      onboardButton.innerText = 'MetaMask Connected';
       onboardButton.disabled = true;
       if (onboarding) {
         onboarding.stopOnboarding();
       }
     } else {
       //If MetaMask is installed we ask the user to connect to their wallet
-      onboardButton.innerText = 'Connect';
+      onboardButton.innerText = 'Connect MetaMask';
       //When the button is clicked we call this function to connect the users MetaMask Wallet
       onboardButton.onclick = onClickConnect;
       //The button is now disabled
@@ -121,6 +125,22 @@ const signMessage = async ({message}) => {
   }
 };
 
+const signMessageWithPrivateKey = async ({message, privateKey}) => {
+  try {
+    const provider = new ethers.providers.JsonRpcProvider();
+    const wallet = new ethers.Wallet(privateKey, provider);
+    const signature = await wallet.signMessage(message);
+    const address = await wallet.getAddress();
+    return {
+      message,
+      signature,
+      address,
+    };
+  } catch (err) {
+    alert(err);
+  }
+};
+
 const generateRandomValue = () => {
   const randomValue = Math.floor(Math.random() * 1000000);
   return randomValue;
@@ -130,7 +150,7 @@ const getTimeStamp = () => {
   const unix = Math.floor(date.getTime() / 1000);
   return {unix, iso: date.toISOString()};
 };
-const postAPICall = ({timestamp, address, value, sign}) => {
+const postAPICall = ({timestamp, address, value, sign, showAlert}) => {
   var myHeaders = new Headers();
   myHeaders.append('Content-Type', 'application/json');
   myHeaders.append('Accept', 'application/json');
@@ -149,12 +169,45 @@ const postAPICall = ({timestamp, address, value, sign}) => {
     redirect: 'follow',
   };
 
-  fetch('http://localhost:3000/metrics', requestOptions)
+  fetch(config.serverURL, requestOptions)
     .then(response => response.text())
-    .then(result => alert('Success'))
+    .then(result => {
+      if (showAlert) {
+        alert('Success');
+      } else {
+        publishIntervalAPICallsHTML += `<li class="list-group-item">${result}</li>`;
+        autoPublishCalls.innerHTML = publishIntervalAPICallsHTML;
+      }
+    })
     .catch(error => console.log('error', error));
 };
+
+const autoPublish = async () => {
+  const randomValue = generateRandomValue();
+  const {unix, iso} = getTimeStamp();
+  const concatedMessage = randomValue.toString().concat(unix.toString());
+  const {message, signature, address} = await signMessageWithPrivateKey({
+    message: concatedMessage,
+    privateKey: config.privateKey,
+  });
+  postAPICall({
+    timestamp: iso,
+    address,
+    value: randomValue,
+    sign: signature,
+    showAlert: false,
+  });
+};
+const prepareHTMLPara = ({key, value}) => {
+  return `<p class="info-text">
+  ${key}: <span>${value}</span>
+</p>`;
+};
 const initialize = async () => {
+  // load config file.
+  fetch('config.json')
+    .then(response => response.json())
+    .then(data => (config = data[0]));
   //This is the function that will be called when the page loads
   basicFunctionality();
 
@@ -174,8 +227,34 @@ const initialize = async () => {
     });
     signatureDiv.innerHTML = signature;
     signerAddressDiv.innerHTML = address;
-    postAPICall({timestamp: iso, address, value: randomValue, sign: signature});
+    postAPICall({
+      timestamp: iso,
+      address,
+      value: randomValue,
+      sign: signature,
+      showAlert: true,
+    });
   };
+
+  setTimeout(() => {
+    // set show config values
+    let html = prepareHTMLPara({key: 'Server URL', value: config.serverURL});
+
+    // show publishInterval
+    html += prepareHTMLPara({
+      key: 'Publish Interval',
+      value: config.publishIntervalInSec + 'sec',
+    });
+
+    // show privateKey
+    html += prepareHTMLPara({
+      key: 'Private Key',
+      value: config.privateKey,
+    });
+    autoPublishConfig.innerHTML = html;
+    // get publish Interval and set in setInterval
+    setInterval(autoPublish, config.publishIntervalInSec * 1000);
+  }, 1000);
 };
 
 window.addEventListener('DOMContentLoaded', initialize);
