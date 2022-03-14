@@ -152,6 +152,13 @@ npm run lint:fix
 npm run test
 ```
 
+or to check test coverage
+
+```sh
+npm run test:ci
+```
+
+
 ## What's next
 
 Please check out [LoopBack 4 documentation](https://loopback.io/doc/en/lb4/) to
