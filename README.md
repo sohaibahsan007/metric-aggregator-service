@@ -53,7 +53,7 @@ config file in UI, which can be accessed using this link [config.json](https://g
 [{
   "serverURL": "http://localhost:3000/metrics",
   "publishIntervalInSec": "5",
-  "privateKey": "585b2e8bc0836315c36445f07cadb6b509a0d721c518c3ebdf7d5372c8bc23d7"
+  "privateKey": "{wallet_private_key}"
 }]
 ```
 
